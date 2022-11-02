@@ -42,4 +42,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function folders(){
+        return $this->hasMany(Folder::class);
+    }
+    public function gfile(){
+        return $this->hasMany(Gfile::class);
+    }
 }

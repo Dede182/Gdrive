@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Models\Folder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Gfile>
@@ -20,11 +21,13 @@ class GfileFactory extends Factory
     {
         $folderId = Folder::inRandomOrder()->first();
         $userId = User::findOrFail($folderId->user_id);
-        return [
-            'fileName' => fake()->word,
-            'folder_id' => $folderId,
-            'user_id' => $userId->id,
+        $filetypes = ['png','jpg','svg','csv','zip','txt','mp4','rar'];
 
-        ];
+
+            return [
+                'fileName' => fake()->text($maxNbChars = 10) .Arr::random($filetypes),
+                'folder_id' => $folderId,
+                'user_id' => $userId->id,
+            ];
     }
 }

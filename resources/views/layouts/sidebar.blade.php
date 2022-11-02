@@ -1,30 +1,28 @@
-<div class="relative">
+<div class="pt-5">
     <div class="flex flex-col border-b-2 border-b-gray-300  pb-2">
         <div class="flex flex-col items-start justify-start px-7">
             <div class="relative">
                 <button id="multiLevelDropdownButton" data-dropdown-toggle="dropdown"
-                    class="px-4 pr-16 py-3  flex hover:brightness-95 items-center bg-white shadow-md rounded-3xl justify-center relative    "
+                    class="px-4 pr-16 py-3  flex hover:brightness-95 items-center bg-white shadow-md rounded-3xl justify-center     "
                     type="button">
                     <x-gplus />
                     <p class="text-md font-semibold  pl-3">New</p>
                 </button>
-                <div id="dropdown" class=" absolute z-10 w-60  bg-white rounded ">
-                    <ul class="text-sm divide-y-2  pb-7 text-gray-700 dark:text-gray-200"
+                <div id="dropdown" class="hidden z-10 !-top-14 !left-3  w-60  bg-white rounded-lg ">
+                    <ul class="text-sm divide-y-2  pb-4 text-gray-700 dark:text-gray-200"
                         aria-labelledby="multiLevelDropdownButton">
-                        <li class="flex items-center mt-4 pb-3  pl-4 gap-x-3">
-                            <x-foldercreate />
-                            <a href="#" class="text-black">New Folder</a>
-                        </li>
+                       <x-dropdowns text="New Folder" add="mt-3 mb-3">
+                        <x-foldercreate />
+                       </x-dropdowns>
 
                         <div class="">
-                            <li class="flex items-center  pl-4 mt-2 gap-x-3 ">
+
+                            <x-dropdowns text="File Upload" add="mt-4">
                                 <x-folder-upload />
-                                <a href="#" class="text-black">File upload</a>
-                            </li>
-                            <li class="flex items-center  pl-4 mt-2 gap-x-3">
+                               </x-dropdowns>
+                               <x-dropdowns text="Folder Upload" add="mt-2">
                                 <x-foldercreate />
-                                <a href="#" class="text-black">Folder upload</a>
-                            </li>
+                               </x-dropdowns>
                         </div>
 
                     </ul>
@@ -32,12 +30,7 @@
             </div>
             <!-- Dropdown menu -->
 
-
-
         </div>
-
-
-
     </div>
     <div class="flex mt-5 flex-col gap-y-2 pr-3">
         <x-sideItem text="My Drive" route="dashboard">
@@ -84,28 +77,28 @@
         </x-sideItem>
 
     </div>
-</div>
-<div class="flex flex-col mt-2">
-    <div class="">
-        <x-sideItem text="Storage">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
-            </svg>
-        </x-sideItem>
-    </div>
-    <div class="pl-7 mt-3 flex flex-col">
+    <div class="flex flex-col mt-2">
+        <div class="">
+            <x-sideItem text="Storage">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                </svg>
+            </x-sideItem>
+        </div>
+        <div class="pl-7 mt-3 flex flex-col">
 
-        <div class="w-[90%] bg-gray-400 rounded-full h-1.5" bis_skin_checked="1">
-            {{-- <div class="bg-blue-300 bg-opacity-70 h-1.5 rounded-full" style="width: 45%" bis_skin_checked="1"></div> --}}
+            <div class="w-[90%] bg-gray-400 rounded-full h-1.5" bis_skin_checked="1">
+                {{-- <div class="bg-blue-300 bg-opacity-70 h-1.5 rounded-full" style="width: 45%" bis_skin_checked="1"></div> --}}
+            </div>
+            <p class="text-xs text-gray-700 mt-3 font-medium">138.8 MB of 15 GB used</p>
         </div>
-        <p class="text-xs text-gray-700 mt-3 font-medium">138.8 MB of 15 GB used</p>
-    </div>
-    <div class="pl-7 w-fit mt-3 cursor-pointer">
-        <div class="px-4 py-1 rounded-lg hover:bg-gray-200 border-2 text-md text-blue-600 font-medium">
-            <p>Buy storage</p>
+        <div class="pl-7 w-fit mt-3 cursor-pointer">
+            <div class="px-4 py-1 rounded-lg hover:bg-gray-200 border-2 text-md text-blue-600 font-medium">
+                <p>Buy storage</p>
+            </div>
         </div>
     </div>
 </div>
-</div>
+
