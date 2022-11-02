@@ -17,12 +17,12 @@
         <div class="min-h-screen bg-gray-100 ">
             @include('layouts.navigation')
 
-            <div class="flex  w-full ease-in-out py-2.5 relative">
-                <div class="w-[20%]  transition duration-500 origin-left " id = "side" >
-                    @include('Layouts.sidebar')
+            <div class="flex">
+                <div class="">
+                    @include('layouts.sidebar')
                 </div>
-                <div class="w-full origin-right ease-in-out" id = "content">
-                    @yield('content')
+                <div class="">
+                    hi
                 </div>
             </div>
         </div>

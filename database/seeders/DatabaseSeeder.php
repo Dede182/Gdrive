@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Gfile;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +29,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'luffy',
             'email' => 'example@gmail.com',
             'password' => Hash::make('asdffdsa')
+        ]);
+
+        $this->call([
+            FolderSeeder::class,
+            GfileSeeder::class,
         ]);
     }
 }

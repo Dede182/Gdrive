@@ -1,4 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <h1>hi</h1>
+    <div class="w-full">
+        hi
+    </div>
 @endsection
