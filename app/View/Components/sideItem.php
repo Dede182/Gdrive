@@ -13,7 +13,7 @@ class sideItem extends Component
      *
      * @return void
      */
-    public function __construct($text="",$route="")
+    public function __construct($text="",$route=null)
     {
         $this->text = $text;
         $this->route = $route;

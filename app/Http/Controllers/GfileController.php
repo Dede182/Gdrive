@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gfile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreGfileRequest;
 use App\Http\Requests\UpdateGfileRequest;
-use Illuminate\Support\Facades\Auth;
 
 class GfileController extends Controller
 {
@@ -26,24 +27,27 @@ class GfileController extends Controller
      */
     public function store(StoreGfileRequest $request)
     {
-        return $request->fileName;
+        // return $request->fileName;
         $fileCollection = [];
         foreach($request->fileName as $key=> $afile){
-
-            // return $afile;
+            Storage::makeDirectory(Auth::user()->name);
+            $folderName = Auth::user()->name;
             $Fname = $afile->getClientOriginalName();
-            $Fname->store('public');
+
             $fileCollection[$key] = [
                 'fileName' => $Fname,
                 'user_id' => Auth::user()->id,
             ];
-            $afile->store('public');
+            $afile->storeAs('public/'.$folderName.'/',$Fname);
         }
         Gfile::insert($fileCollection);
         // return $fileCollection;
         return redirect()->route('dashboard')->with('status', 'files are uploaded');
     }
 
+    public function download(){
+        return "hi";
+    }
     /**
      * Display the specified resource.
      *

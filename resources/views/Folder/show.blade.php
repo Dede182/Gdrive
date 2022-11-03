@@ -27,10 +27,14 @@
                             class="w-60 h-60 border flex flex-col items-center text-xs font-medium  rounded-md group">
 
                             <div class="h-[85%] border w-full flex items-center justify-center">
-                                <img src="{{ asset('images/png/002-pdf.png') }}" class="w-14 h-14 mr-4 text-gray-500 " alt=""/>
+                                <img src="{{ asset('images/png/002-pdf.png') }}"
+                                id = "{{ $file->fileName }}"
+                                class="w-14 h-14 mr-4 indicate text-gray-500 " alt=""/>
                             </div>
                             <div class="flex items-center pl-3 h-[15%]  group-hover:bg-gray-300 w-full">
-                                <img src="{{ asset('images/png/002-pdf.png') }}" class="w-4 h-4 mr-4 text-gray-500 " alt=""/>
+                                <img src="{{ asset('images/png/002-pdf.png') }}"
+                                id = "{{ $file->fileName }}"
+                                class="w-4 h-4 mr-4 indicate text-gray-500 " alt=""/>
                                 <p class="tracking-tighter">{{ $file->fileName }}</p>
 
 
@@ -54,3 +58,42 @@
         </div>
     </main>
 @endsection
+
+
+
+@push('script')
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const images = document.querySelectorAll('.indicate');
+        images.forEach((image,index) => {
+            name = image.id;
+
+            regex = new RegExp('[^.]+$');
+            extension = name.match(regex);
+            extension = extension[0];
+            switch(extension){
+                case 'mp4' :
+                image.src = "{{ asset('images/png/004-video.png') }}"
+                break;
+                case 'png':
+                case 'jpg':
+                    image.src =  "{{ asset('images/png/image.png') }}"
+                break;
+                case 'txt' :
+                image.src =  "{{ asset('images/png/txt-file.png') }}"
+                break;
+                case 'zip' :
+                image.src =  "{{ asset('images/png/zip.png') }}"
+                break;
+                case 'rar' :
+                image.src =  "{{ asset('images/png/rar.png') }}"
+                break;
+                default:
+                image.src =  "{{ asset('images/png/google-docs.png') }}"
+            }
+
+        });
+
+    })
+    </script>
+@endpush
