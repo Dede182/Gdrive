@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Folder extends Model
 {
     use HasFactory;
+    protected $with = ['files'];
+    public function files(){
+        return $this->hasMany(Gfile::class);
+    }
 }

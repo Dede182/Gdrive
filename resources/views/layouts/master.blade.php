@@ -28,4 +28,12 @@
             </div>
         </div>
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            @if (session('status'))
+                showToast("{{ session('status') }}")
+            @endif
+        })
+    </script>
+    @stack('script')
 </html>

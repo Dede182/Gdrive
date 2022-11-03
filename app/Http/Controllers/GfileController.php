@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gfile;
 use App\Http\Requests\StoreGfileRequest;
 use App\Http\Requests\UpdateGfileRequest;
+use Illuminate\Support\Facades\Auth;
 
 class GfileController extends Controller
 {
@@ -17,17 +18,6 @@ class GfileController extends Controller
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -36,7 +26,22 @@ class GfileController extends Controller
      */
     public function store(StoreGfileRequest $request)
     {
-        //
+        return $request->fileName;
+        $fileCollection = [];
+        foreach($request->fileName as $key=> $afile){
+
+            // return $afile;
+            $Fname = $afile->getClientOriginalName();
+            $Fname->store('public');
+            $fileCollection[$key] = [
+                'fileName' => $Fname,
+                'user_id' => Auth::user()->id,
+            ];
+            $afile->store('public');
+        }
+        Gfile::insert($fileCollection);
+        // return $fileCollection;
+        return redirect()->route('dashboard')->with('status', 'files are uploaded');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Folder;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreFolderRequest;
 use App\Http\Requests\UpdateFolderRequest;
 
@@ -29,13 +30,6 @@ class FolderController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreFolderRequest  $request
@@ -43,7 +37,11 @@ class FolderController extends Controller
      */
     public function store(StoreFolderRequest $request)
     {
-        //
+        $folder = new Folder();
+        $folder->folderName = $request->folderName;
+        $folder->user_id = Auth::user()->id;
+        $folder->save();
+        return redirect()->route('dashboard')->with('status',$folder->folderName . " is created");
     }
 
     /**
@@ -54,7 +52,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        //
+        return view('Folder.show',compact('folder'));
     }
 
     /**

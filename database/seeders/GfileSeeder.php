@@ -15,6 +15,6 @@ class GfileSeeder extends Seeder
      */
     public function run()
     {
-        Gfile::factory(20)->create();
+        Gfile::factory(40)->create();
     }
 }

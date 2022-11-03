@@ -11,15 +11,26 @@
                 <div id="dropdown" class="hidden z-10 !-top-14 !left-3  w-60  bg-white rounded-lg ">
                     <ul class="text-sm divide-y-2  pb-4 text-gray-700 dark:text-gray-200"
                         aria-labelledby="multiLevelDropdownButton">
-                       <x-dropdowns text="New Folder" add="mt-3 mb-3">
+                        <form action="{{ route('folder.store') }}" id="folderForm" method="POST">
+                            @csrf
+                            <input type="text" class="hidden" id="folderName" name="folderName">
+                        </form>
+                       <x-dropdowns text="New Folder" id="folderCreate" add="mt-3 mb-3">
                         <x-foldercreate />
                        </x-dropdowns>
 
                         <div class="">
 
-                            <x-dropdowns text="File Upload" add="mt-4">
+
+                            <form action="{{ route('file.store') }}"
+                            enctype="multipart/form-data"
+                            id="fileForm" method="POST">
+                                @csrf
+                                <input type="file" class="hidden" id="fileName" name="fileName[]" multiple/>
+                            </form>
+                            <x-dropdowns text="File Upload" id="fileUpload" add="mt-4">
                                 <x-folder-upload />
-                               </x-dropdowns>
+                            </x-dropdowns>
                                <x-dropdowns text="Folder Upload" add="mt-2">
                                 <x-foldercreate />
                                </x-dropdowns>
@@ -102,3 +113,27 @@
     </div>
 </div>
 
+@push('script')
+    <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const folderName = document.getElementById('folderName');
+              const folderForm = document.getElementById('folderForm');
+              const folderCreate=  document.getElementById('folderCreate');
+              const fileUpload=  document.getElementById('fileUpload');
+              const fileForm=  document.getElementById('fileForm');
+              const fileName=  document.getElementById('fileName');
+
+              folderCreate.addEventListener('click',()=>{
+                inputBox(folderForm,folderName);
+              })
+
+              fileUpload.addEventListener('click',()=>{
+                fileName.click();
+                fileName.addEventListener('change',()=>{
+                    fileForm.submit();
+                })
+              })
+
+        });
+    </script>
+@endpush

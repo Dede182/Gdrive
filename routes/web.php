@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\GfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
 
 
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::post('/folder/store',[FolderController::class,'store'])->name('folder.store');
+    Route::get("/folder/show/{folder}",[FolderController::class,'show'])->name('folder.show');
+    Route::post('/file/store',[GfileController::class,'store'])->name('file.store');
 });
 
 Route::get('/dia',[FolderController::class,'dia']);

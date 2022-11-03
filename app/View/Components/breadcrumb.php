@@ -4,23 +4,20 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class dropdowns extends Component
+class breadcrumb extends Component
 {
-    public $text;
-    public $add;
-    public $id;
+    public $links;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($text="",$add="",$id="")
+    public function __construct($links=[])
     {
-        $this->text = $text;
-        $this->add = $add;
-        $this->id = $id;
+        //
+        $this->links = ["home"=>route('home')]+$links;
     }
-
     /**
      * Get the view / contents that represent the component.
      *
@@ -28,6 +25,6 @@ class dropdowns extends Component
      */
     public function render()
     {
-        return view('components.dropdowns');
+        return view('components.breadcrumb');
     }
 }
