@@ -20,8 +20,6 @@
                        </x-dropdowns>
 
                         <div class="">
-
-
                             <form action="{{ route('file.store') }}"
                             enctype="multipart/form-data"
                             id="fileForm" method="POST">
@@ -31,7 +29,16 @@
                             <x-dropdowns text="File Upload" id="fileUpload" add="mt-4">
                                 <x-folder-upload />
                             </x-dropdowns>
-                               <x-dropdowns text="Folder Upload" add="mt-2">
+
+                            <form action="{{ route('folder.upload') }}"
+                            enctype="multipart/form-data"
+                            id="folderUploadForm" method="POST">
+                                @csrf
+                                <input type="text" name = "originalFolderName" hidden value = "" id = "originalFolderName" />
+                                <input type="file" name = "folderName[]" class="hidden" id="folderUpload"  webkitdirectory directory multiple/>
+                            </form>
+
+                               <x-dropdowns text="Folder Upload" id="folderUploadIcon" add="mt-2">
                                 <x-foldercreate />
                                </x-dropdowns>
                         </div>
@@ -123,6 +130,12 @@
               const fileForm=  document.getElementById('fileForm');
               const fileName=  document.getElementById('fileName');
 
+              const folderUpload=  document.getElementById('folderUpload');
+              const folderUploadForm=  document.getElementById('folderUploadForm');
+              const folderUploadIcon=  document.getElementById('folderUploadIcon');
+              const originalFolderName=  document.getElementById('originalFolderName');
+
+
               folderCreate.addEventListener('click',()=>{
                 inputBox(folderForm,folderName);
               })
@@ -131,7 +144,20 @@
                 fileName.click();
                 fileName.addEventListener('change',()=>{
                     fileForm.submit();
+                    });
                 })
+
+
+              folderUploadIcon.addEventListener('click',()=>{
+                    folderUpload.click();
+                    folderUpload.addEventListener('change',(e)=>{
+                        // console.log(e)
+                        const folder = e.target.files[0].webkitRelativePath.substring(0,e.target.files[0].webkitRelativePath.indexOf('/'));
+                        originalFolderName.value = folder;
+                        console.log(originalFolderName.value)
+
+                        folderUploadForm.submit();
+                    })
               })
 
         });

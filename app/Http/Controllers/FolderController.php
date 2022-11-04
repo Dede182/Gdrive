@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Gfile;
 use App\Models\Folder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreFolderRequest;
 use App\Http\Requests\UpdateFolderRequest;
 
@@ -37,11 +40,40 @@ class FolderController extends Controller
      */
     public function store(StoreFolderRequest $request)
     {
+        return $request;
         $folder = new Folder();
         $folder->folderName = $request->folderName;
         $folder->user_id = Auth::user()->id;
         $folder->save();
         return redirect()->route('dashboard')->with('status',$folder->folderName . " is created");
+    }
+
+    public function folderUpload(Request $request){
+        // return $request;
+        $folder = new Folder();
+        $folder->folderName = $request->originalFolderName;
+        $folder->user_id = Auth::user()->id;
+        $folder->save();
+
+        $fileCollection = [];
+        foreach($request->folderName as $key=> $afile){
+            Storage::makeDirectory(Auth::user()->name);
+            $keepFolderName = Auth::user()->name;
+            $Fname = $afile->getClientOriginalName();
+
+
+                $fileCollection[$key] = [
+                    'fileName' => $Fname,
+                    'user_id' => Auth::user()->id,
+                    'folder_id' => $folder->id,
+                ];
+
+
+            $afile->storeAs('public/'.$keepFolderName.'/',$Fname);
+        }
+        Gfile::insert($fileCollection);
+
+        return redirect()->route('dashboard')->with('status','folder was created successfully');
     }
 
     /**

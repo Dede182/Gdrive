@@ -24,6 +24,7 @@ Route::get('/home', function () {
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::post('/folder/store',[FolderController::class,'store'])->name('folder.store');
+    Route::post('/folder/upload',[FolderController::class,'folderUpload'])->name('folder.upload');
     Route::get("/folder/show/{folder}",[FolderController::class,'show'])->name('folder.show');
     Route::post('/file/store',[GfileController::class,'store'])->name('file.store');
 });

@@ -27,6 +27,7 @@ class GfileController extends Controller
      */
     public function store(StoreGfileRequest $request)
     {
+        // return $request;
         // return $request->fileName;
         $fileCollection = [];
         foreach($request->fileName as $key=> $afile){
@@ -34,15 +35,25 @@ class GfileController extends Controller
             $folderName = Auth::user()->name;
             $Fname = $afile->getClientOriginalName();
 
-            $fileCollection[$key] = [
-                'fileName' => $Fname,
-                'user_id' => Auth::user()->id,
-            ];
+            if($request->id){
+                $fileCollection[$key] = [
+                    'fileName' => $Fname,
+                    'user_id' => Auth::user()->id,
+                    'folder_id' => $request->id,
+                ];
+            }
+            else{
+                $fileCollection[$key] = [
+                    'fileName' => $Fname,
+                    'user_id' => Auth::user()->id,
+                ];
+
+            }
             $afile->storeAs('public/'.$folderName.'/',$Fname);
         }
         Gfile::insert($fileCollection);
         // return $fileCollection;
-        return redirect()->route('dashboard')->with('status', 'files are uploaded');
+        return redirect()->back()->with('status', 'files are uploaded');
     }
 
     public function download(){
