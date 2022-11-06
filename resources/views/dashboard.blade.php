@@ -125,7 +125,8 @@
                                         {{ $file->ParentName }}
                                     </div>
 
-                                    {{ number_format(Storage::size('public/'.$file->filePath) / 1048576,2)  }} mb
+                                    {{ MbCalculate::bytesToHuman(Storage::size('public/'.$file->filePath) ) }}
+                                    {{-- {{ number_format(Storage::size('public/'.$file->filePath) / 1048576,2)  }} mb --}}
                                 </div>
                             </button>
                         @empty

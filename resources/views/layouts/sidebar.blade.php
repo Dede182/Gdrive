@@ -1,4 +1,6 @@
+
 <div class="pt-5">
+
     <div class="flex flex-col border-b-2 border-b-gray-300  pb-2">
         <div class="flex flex-col items-start justify-start px-7">
             <div class="relative">
@@ -7,6 +9,7 @@
                     type="button">
                     <x-gplus />
                     <p class="text-md font-semibold  pl-3">New</p>
+
                 </button>
                 <div id="dropdown" class="hidden z-10 !-top-14 !left-3  w-60  bg-white rounded-lg ">
                     <ul class="text-sm divide-y-2  pb-4 text-gray-700 dark:text-gray-200"
@@ -107,10 +110,10 @@
         </div>
         <div class="pl-7 mt-3 flex flex-col">
 
-            <div class="w-[90%] bg-gray-400 rounded-full h-1.5" bis_skin_checked="1">
-                {{-- <div class="bg-blue-300 bg-opacity-70 h-1.5 rounded-full" style="width: 45%" bis_skin_checked="1"></div> --}}
-            </div>
-            <p class="text-xs text-gray-700 mt-3 font-medium">138.8 MB of 15 GB used</p>
+            {{-- <div class="w-[90%] bg-gray-400 rounded-full h-1.5" bis_skin_checked="1">
+                {{-- <div class="bg-blue-300 bg-opacity-70 h-1.5 rounded-full" style="width: 45%" bis_skin_checked="1"></div>
+            </div> --}}
+            <p class="text-xs text-gray-700 mt-3 font-medium">  {{ MbCalculate::TotalFileSize() }} of 15 GB used</p>
         </div>
         <div class="pl-7 w-fit mt-3 cursor-pointer">
             <div class="px-4 py-1 rounded-lg hover:bg-gray-200 border-2 text-md text-blue-600 font-medium">
