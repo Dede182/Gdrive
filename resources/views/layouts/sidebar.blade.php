@@ -35,7 +35,7 @@
                             id="folderUploadForm" method="POST">
                                 @csrf
                                 <input type="text" name = "originalFolderName" hidden value = "" id = "originalFolderName" />
-                                <input type="file" name = "folderName[]" class="hidden" id="folderUpload"  webkitdirectory directory multiple/>
+                                <input type="file" name = "folders[]" class="hidden" id="folderUpload"  webkitdirectory directory multiple/>
                             </form>
 
                                <x-dropdowns text="Folder Upload" id="folderUploadIcon" add="mt-2">

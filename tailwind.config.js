@@ -6,7 +6,11 @@ module.exports = {
       "./resources/**/*.vue",
     ],
     theme: {
-      extend: {},
+      extend: {
+        fontFamily:{
+            'Bebas' :[ 'Bebas Neue', 'cursive']
+        }
+      },
     },
     plugins: [
         require('flowbite/plugin')

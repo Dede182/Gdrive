@@ -16,7 +16,9 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
+        "@lottiefiles/lottie-player": "^1.6.0",
         "flowbite": "^1.5.3",
-        "sweetalert2": "^11.6.5"
+        "sweetalert2": "^11.6.5",
+        "venobox": "^2.0.4"
     }
 }

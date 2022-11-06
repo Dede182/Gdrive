@@ -2,6 +2,8 @@ import './bootstrap';
 import 'flowbite';
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
+import "@lottiefiles/lottie-player";
+import "venobox";
 
 window.inputBox = async function(folderForm,folderName){
     const { value: name } = await Swal.fire({
@@ -36,7 +38,7 @@ window.showToast = function(message){
       })
 }
 
-
 window.Alpine = Alpine;
 
 Alpine.start();
+

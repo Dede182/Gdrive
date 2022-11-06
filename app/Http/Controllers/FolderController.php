@@ -40,7 +40,7 @@ class FolderController extends Controller
      */
     public function store(StoreFolderRequest $request)
     {
-        return $request;
+        // return $request;
         $folder = new Folder();
         $folder->folderName = $request->folderName;
         $folder->user_id = Auth::user()->id;
@@ -56,14 +56,17 @@ class FolderController extends Controller
         $folder->save();
 
         $fileCollection = [];
-        foreach($request->folderName as $key=> $afile){
-            Storage::makeDirectory(Auth::user()->name);
-            $keepFolderName = Auth::user()->name;
+        foreach($request->folders as $key=> $afile){
+            Storage::makeDirectory('public/'.Auth::user()->name);
+            Storage::makeDirectory('public/'.Auth::user()->name.'/'.$folder->folderName);
+            $keepFolderName =Auth::user()->name.'/'.$folder->folderName;
             $Fname = $afile->getClientOriginalName();
 
 
                 $fileCollection[$key] = [
                     'fileName' => $Fname,
+                    'filePath' => $keepFolderName.'/'.$Fname,
+                    'parentName' => $folder->folderName,
                     'user_id' => Auth::user()->id,
                     'folder_id' => $folder->id,
                 ];

@@ -27,6 +27,8 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/folder/upload',[FolderController::class,'folderUpload'])->name('folder.upload');
     Route::get("/folder/show/{folder}",[FolderController::class,'show'])->name('folder.show');
     Route::post('/file/store',[GfileController::class,'store'])->name('file.store');
+    Route::post('/bulkDelete',[GfileController::class,'bulkDelete'])->name('bulkDelete');
+    Route::post('/bulkCopy',[GfileController::class,'bulkCopy'])->name('bulkCopy');
 });
 
 Route::get('/dia',[FolderController::class,'dia']);

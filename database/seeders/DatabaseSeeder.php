@@ -33,14 +33,14 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('asdffdsa')
         ]);
 
-        $this->call([
-            FolderSeeder::class,
-            GfileSeeder::class,
-        ]);
+        // $this->call([
+        //     FolderSeeder::class,
+        //     GfileSeeder::class,
+        // ]);
 
-        // $file = new FileSystem;
-        // $file->cleanDirectory('storage/app/public');
+        $file = new FileSystem;
+        $file->cleanDirectory('storage/app/public/');
 
-        // echo "\e[93mStorage Cleaned \n";
+        echo "\e[93mStorage Cleaned \n";
     }
 }

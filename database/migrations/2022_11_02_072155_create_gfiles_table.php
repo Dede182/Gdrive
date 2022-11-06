@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('gfiles', function (Blueprint $table) {
             $table->id();
             $table->string('fileName');
+            $table->string('filePath');
+            $table->string('ParentName')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('folder_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
