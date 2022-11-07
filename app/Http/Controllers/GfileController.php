@@ -25,11 +25,27 @@ class GfileController extends Controller
             $Fname = $afile->getClientOriginalName();
             $filepath = $folderName.'/'.$Fname;
 
+            if($request->id){
+                $parentFolder = Folder::findOrFail($request->id);
+
+                $fileCollection[$key] = [
+                    'fileName' => $Fname,
+                    'user_id' => Auth::user()->id,
+                    'filepath' => $filepath,
+                    'parentName' => $parentFolder->folderName,
+                    'folder_id' => $request->id,
+                ];
+            }
+            else{
                 $fileCollection[$key] = [
                     'fileName' => $Fname,
                     'filepath' => $filepath,
+
                     'user_id' => Auth::user()->id,
                 ];
+
+            }
+
 
                 $afile->storeAs('public/'.$folderName.'/',$Fname);
 
@@ -92,9 +108,27 @@ class GfileController extends Controller
     // bulk copy
     public function bulkCopy(Request $request){
         if(isset($request['files'])){
-            return 'files';
+            $checks = $request["files"];
+            $ids = [];
+            $files = [];
+            foreach($checks as $key=> $check){
+                $ids[$key] = (int)$check;
+            }
+            foreach($ids as $key=>$id){
+                $files[$key] = Gfile::findOrFail($id);
+            }
+            $copyFiles = [];
+            foreach($files as $key=>$file){
+                $copyFiles[$key] = $file->replicate();
+                $copyFiles[$key]->fileName =    Str::random(3)."_copy_". $file->fileName ;
+                $copyFiles[$key]->filePath = Auth::user()->name.'/'.$file->ParentName.'/'.$copyFiles[$key]->fileName;
+                $fromCopy = 'public/'.Auth::user()->name.'/'.$file->ParentName.'/'.$file->fileName;
+                $toCopy ='public/'.Auth::user()->name.'/'.$copyFiles[$key]->ParentName.'/'. $copyFiles[$key]->fileName;
+                Storage::copy($fromCopy,$toCopy);
+                $copyFiles[$key]->save();
+                // return $copyFiles[$key];
+            }
         }
-
         // folder copy
         if(isset($request['folders'])){
             $checks = $request["folders"];
@@ -106,9 +140,10 @@ class GfileController extends Controller
             foreach($ids as $key=>$id){
                 $folders[$key] = Folder::findOrFail($id);
             }
+
             foreach($folders as $dc){
                 $newfolder = $dc->replicate();
-                $newfolder->folderName = $dc->folderName."_copy".Str::random(6);
+                $newfolder->folderName = $dc->folderName."_copy_`".Str::random(6);
                 $newfolder->created_at = Carbon::now();
                 Storage::makeDirectory('public/'.Auth::user()->name.'/'.$newfolder->folderName);
                 $newfolder->save();
@@ -128,11 +163,24 @@ class GfileController extends Controller
                     // return $newfilesId[$key];
                 }
             }
+        }
+        return redirect()->back()->with('status','Duplication process successed');
+    }
 
+    public function bulkDownload(Request $request){
+        if(isset($request['files'])){
+            $checks = $request["files"];
+            $ids = [];
+            $files = [];
+            foreach($checks as $key=> $check){
+                $ids[$key] = (int)$check;
+            }
+            foreach($ids as $key=>$id){
+                $files[$key] = Gfile::findOrFail($id);
+              return   response()->download(storage_path('app/public/'.$files[$key]->filePath));
+            }
 
-
-
-            return redirect()->route('dashboard')->with('status','files are duplicated');
+            return redirect()->back()->with('status','download process successed');
         }
     }
 }

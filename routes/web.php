@@ -29,6 +29,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::post('/file/store',[GfileController::class,'store'])->name('file.store');
     Route::post('/bulkDelete',[GfileController::class,'bulkDelete'])->name('bulkDelete');
     Route::post('/bulkCopy',[GfileController::class,'bulkCopy'])->name('bulkCopy');
+    Route::post('/bulkDownload',[GfileController::class,'bulkDownload'])->name('bulkDownload');
 });
 
 Route::get('/dia',[FolderController::class,'dia']);

@@ -35,9 +35,31 @@
                                 <img src="{{ asset('images/png/trash.png') }}" class="w-5 h-5" />
                             </button>
 
-                            <button>
-                                <img src="{{ asset('images/png/menu.png') }}" class="w-5 h-5" />
-                            </button>
+                               {{-- drop down -form --}}
+                        <form id="mainForm" method="POST" class="hidden">
+                            @csrf
+                        </form>
+                        {{-- drop down button --}}
+                        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
+                            class="
+                        focus:bg-slate-200 rounded-[100%] py-1 px-1
+                        "
+                            type="button">
+                            <img src="{{ asset('images/png/menu.png') }}" class="w-5 h-5" />
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div id="dropdownDivider"
+                            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                            data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom"
+                            bis_skin_checked="1"
+                            style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 9.90099px, 0px);">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownDividerButton">
+                                <x-dropdowns text="Copy" id="copy" add="mt-2">
+                                    <img src="{{ asset('images/png/copy.png') }}" class="w-4 h-4" alt="">
+                                </x-dropdowns>
+                        </div>
                         </div>
 
                     </div>
@@ -59,14 +81,10 @@
 
                     <div class="flex flex-wrap gap-x-8 gap-y-5 pl-10 mt-5">
                         @forelse ($folder->files as $file)
-                            <form action="{{ route('bulkDelete') }}" method="POST" class="hidden"
-                                id="fileDelete">
-                                @csrf
-                            </form>
 
                             <button
                                 class="w-60 h-60 border fileSelect flex flex-col items-center text-xs font-medium  rounded-md group">
-                                <input type="checkbox" name="files[]" class="hidden" form="fileDelete"
+                                <input type="checkbox" name="files[]" class="hidden" form="mainForm"
                                     value="{{ $file->id }}">
                                 <div class="h-[85%] border w-full flex overflow-hidden items-center justify-center">
                                     <a class="venobox my-image-links " id="veno">
@@ -131,6 +149,8 @@
             const trashBtn = document.getElementById('trashBtn');
             const fileDelete = document.getElementById('fileDelete');
             const veno = document.getElementById('veno');
+            const mainForm = document.getElementById('mainForm');
+             const copy = document.getElementById('copy');
 
 
 
@@ -152,7 +172,12 @@
 
                     console.log(input.checked)
                     trashBtn.addEventListener('click', () => {
-                        fileDelete.submit();
+                        mainForm.setAttribute('action','{{ route('bulkDelete') }}')
+                        mainForm.submit();
+                    })
+                    copy.addEventListener('click', () => {
+                        mainForm.setAttribute('action','{{ route('bulkCopy') }}')
+                        mainForm.submit();
                     })
                 })
 

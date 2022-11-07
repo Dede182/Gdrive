@@ -49,6 +49,9 @@
                                 <x-dropdowns text="Copy" id="copy" add="mt-2">
                                     <img src="{{ asset('images/png/copy.png') }}" class="w-4 h-4" alt="">
                                 </x-dropdowns>
+                                <x-dropdowns text="Download" id="download" add="mt-2">
+                                    <img src="{{ asset('images/png/download.png') }}" class="w-4 h-4" alt="">
+                                </x-dropdowns>
                         </div>
 
 
@@ -166,7 +169,7 @@
             const mainForm = document.getElementById('mainForm');
             const veno = document.getElementById('veno');
             const copy = document.getElementById('copy');
-
+            const download = document.getElementById('download');
 
             // drop down actions
 
@@ -198,6 +201,10 @@
                         mainForm.setAttribute('action','{{ route('bulkCopy') }}')
                         mainForm.submit();
                     })
+                    download.addEventListener('click', () => {
+                        mainForm.setAttribute('action','{{ route('bulkDownload') }}')
+                        mainForm.submit();
+                    })
                 })
 
             })
@@ -227,6 +234,10 @@
                     })
                     copy.addEventListener('click', () => {
                         mainForm.setAttribute('action','{{ route('bulkCopy') }}')
+                        mainForm.submit();
+                    })
+                    download.addEventListener('click', () => {
+                        mainForm.setAttribute('action','{{ route('bulkDownload') }}')
                         mainForm.submit();
                     })
                 })
