@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ParentName')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('folder_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -32,5 +33,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('gfiles');
+
     }
 };

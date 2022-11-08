@@ -1,4 +1,4 @@
-<?php
+-<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('folderName');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -19,15 +19,18 @@
                     <input type="number" class="hidden" name="id">
                 </form>
                 <div class="" id="fileCreateBtn">
-                    <div class="flex gap-x-6">
+                    <div class="flex gap-x-3">
                         <button id="trashBtn">
-                            <img src="{{ asset('images/png/trash.png') }}" class="w-5 h-5" />
+                            <img src="{{ asset('images/png/recycle-bin.png') }}" class="w-5 h-5" />
                         </button>
 
-                        {{-- drop down --}}
-                        {{-- drop down -form --}}
+
                         <form id="mainForm" method="POST" class="hidden">
                             @csrf
+                        </form>
+                        <form id="deleteForm" method="POST" class="hidden">
+                            @csrf
+                            @method('delete')
                         </form>
                         {{-- drop down button --}}
                         <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
@@ -49,9 +52,7 @@
                                 <x-dropdowns text="Copy" id="copy" add="mt-2">
                                     <img src="{{ asset('images/png/copy.png') }}" class="w-4 h-4" alt="">
                                 </x-dropdowns>
-                                <x-dropdowns text="Download" id="download" add="mt-2">
-                                    <img src="{{ asset('images/png/download.png') }}" class="w-4 h-4" alt="">
-                                </x-dropdowns>
+
                         </div>
 
 
@@ -107,31 +108,44 @@
                     <div class="flex flex-wrap gap-x-8 gap-y-5 pl-10 mt-5">
 
                         @forelse ($files as $file)
+                        <div class="relative">
                             <button
-                                class="w-60 h-60 border fileSelect flex flex-col  items-center text-xs font-medium  rounded-md group">
-                                <input type="checkbox" name="files[]" class="hidden" form="mainForm"
-                                    value="{{ $file->id }}">
-                                <div class="h-[85%] overflow-hidden border w-full flex items-center justify-center">
-                                    <a class="venobox my-image-links  " id="veno">
-                                        <img src="{{ asset('images/png/002-pdf.png') }}"
-                                            class="w-14 indicate h-14 mr-4 object-cover text-gray-500 "
-                                            id="{{ $file->filePath }}" alt="" />
-                                    </a>
-                                </div>
-                                <div class="flex items-center justify-between pl-3 h-[15%] w-full">
-                                    <div class="flex items-center">
-                                        <img src="{{ asset('images/png/002-pdf.png') }}" id="{{ $file->fileName }}"
-                                        class="w-4 h-4 mr-2 indicates text-gray-500 " alt="" />
-                                         <p class="tracking-tighter">{{ Str::limit($file->fileName ,20,'...')}}</p>
-                                    </div>
-                                    <div class="text-gray-400 text-[13px] pr-3">
-                                        {{ $file->ParentName }}
-                                    </div>
+                            class="w-60 h-60 border fileSelect flex flex-col  items-center text-xs font-medium  rounded-md group">
+                            <input type="checkbox" name="files[]" class="hidden" form="mainForm"
+                                value="{{ $file->id }}">
+                            <div class="h-[85%] overflow-hidden border w-full flex items-center justify-center">
 
-                                    {{ MbCalculate::bytesToHuman(Storage::size('public/'.$file->filePath) ) }}
-                                    {{-- {{ number_format(Storage::size('public/'.$file->filePath) / 1048576,2)  }} mb --}}
+                                    <a class="venobox my-image-links  " data-autoplay="true" data-vbtype="video" data-ratio="1x1" data-maxwidth="400px"  id="veno">
+                                    <img src="{{ asset('images/png/002-pdf.png') }}"
+                                        class="w-14 indicate h-14 mr-4 object-cover text-gray-500 "
+                                        id="{{ $file->filePath }}" alt="" />
+                                    </a>
+
+
+                            </div>
+                            <div class="flex items-center justify-between pl-3 h-[15%] w-full">
+                                <div class="flex items-center">
+                                    <img src="{{ asset('images/png/002-pdf.png') }}" id="{{ $file->fileName }}"
+                                    class="w-4 h-4 mr-2 indicates text-gray-500 " alt="" />
+                                     <p class="tracking-tighter">{{ Str::limit($file->fileName ,20,'...')}}</p>
                                 </div>
+                                <div class="text-gray-400 text-[13px] pr-3">
+
+                                </div>
+
+                                {{-- {{ number_format(Storage::size('public/'.$file->filePath) / 1048576,2)  }} mb --}}
+                            </div>
+                        </button>
+                        <form action = "{{ route('download',$file->id) }}"
+                            class="absolute bottom-0 right-2"
+                            method="GET">
+                            @csrf
+                            <button>
+                                <img src = "{{ asset('images/png/download.png') }}" class="w-5 h-5"/>
                             </button>
+                        </form>
+                        </div>
+
                         @empty
                             <p>There is no files yet</p>
                         @endforelse
@@ -167,13 +181,11 @@
 
             const trashBtn = document.getElementById('trashBtn');
             const mainForm = document.getElementById('mainForm');
+            const deleteForm = document.getElementById('deleteForm');
+
             const veno = document.getElementById('veno');
             const copy = document.getElementById('copy');
-            const download = document.getElementById('download');
-
-            // drop down actions
-
-
+            const video = document.getElementById('video');
 
 
             // for file actions
@@ -194,15 +206,13 @@
 
                     console.log(input.checked)
                     trashBtn.addEventListener('click', () => {
-                        mainForm.setAttribute('action','{{ route('bulkDelete') }}')
-                        mainForm.submit();
+                        deleteForm.setAttribute('action','{{ route('bulkDelete',["delete" => "soft"] )}}')
+                        input.setAttribute('form','deleteForm');
+                        deleteForm.submit();
                     })
                     copy.addEventListener('click', () => {
                         mainForm.setAttribute('action','{{ route('bulkCopy') }}')
-                        mainForm.submit();
-                    })
-                    download.addEventListener('click', () => {
-                        mainForm.setAttribute('action','{{ route('bulkDownload') }}')
+                        input.setAttribute('form','mainForm');
                         mainForm.submit();
                     })
                 })
@@ -229,17 +239,15 @@
 
                     console.log(input.checked)
                     trashBtn.addEventListener('click', () => {
-                        mainForm.setAttribute('action','{{ route('bulkDelete') }}')
-                        mainForm.submit();
+                        deleteForm.setAttribute('action','{{ route('bulkDelete',["delete" => "soft"] )}}')
+                        input.setAttribute('form','deleteForm');
+                        deleteForm.submit();
                     })
                     copy.addEventListener('click', () => {
                         mainForm.setAttribute('action','{{ route('bulkCopy') }}')
                         mainForm.submit();
                     })
-                    download.addEventListener('click', () => {
-                        mainForm.setAttribute('action','{{ route('bulkDownload') }}')
-                        mainForm.submit();
-                    })
+
                 })
 
             })
@@ -297,6 +305,8 @@
                 switch (extension) {
                     case 'mp4':
                         image.src = "{{ asset('images/png/004-video.png') }}"
+                        image.parentElement.setAttribute('href', `{{ asset('storage/' . '${image.id}') }}`)
+                        console.log(image.parentElement.parentElement);
                         break;
                     case 'png':
                     case 'jpg':

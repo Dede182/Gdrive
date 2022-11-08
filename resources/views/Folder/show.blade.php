@@ -32,13 +32,17 @@
                     <div class="flex " id="fileCreateBtn">
                         <div class="flex gap-x-2">
                             <button id="trashBtn">
-                                <img src="{{ asset('images/png/trash.png') }}" class="w-5 h-5" />
+                                <img src="{{ asset('images/png/recycle-bin.png') }}" class="w-5 h-5" />
                             </button>
 
-                               {{-- drop down -form --}}
-                        <form id="mainForm" method="POST" class="hidden">
-                            @csrf
-                        </form>
+
+                            <form id="mainForm" method="POST" class="hidden">
+                                @csrf
+                            </form>
+                            <form id="deleteForm" method="POST" class="hidden">
+                                @csrf
+                                @method('delete')
+                            </form>
                         {{-- drop down button --}}
                         <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider"
                             class="
@@ -81,8 +85,8 @@
 
                     <div class="flex flex-wrap gap-x-8 gap-y-5 pl-10 mt-5">
                         @forelse ($folder->files as $file)
-
-                            <button
+                            <div class="relative">
+                                 <button
                                 class="w-60 h-60 border fileSelect flex flex-col items-center text-xs font-medium  rounded-md group">
                                 <input type="checkbox" name="files[]" class="hidden" form="mainForm"
                                     value="{{ $file->id }}">
@@ -99,9 +103,19 @@
                                         class="w-4 h-4 mr-4 indicates text-gray-500 " alt="" />
 
 
-                                    <p class="tracking-tighter">{{ $file->fileName }}</p>
+                                    <p class="tracking-tighter">{{ Str::limit($file->fileName ,20,'...')}}</p>
                                 </div>
                             </button>
+                            <form action = "{{ route('download',$file->id) }}"
+                                class="absolute bottom-0 right-2"
+                                method="GET">
+                                @csrf
+                                <button>
+                                    <img src = "{{ asset('images/png/download.png') }}" class="w-5 h-5"/>
+                                </button>
+                            </form>
+                            </div>
+
                         @empty
                             <p>There is no files yet</p>
                         @endforelse
@@ -151,6 +165,7 @@
             const veno = document.getElementById('veno');
             const mainForm = document.getElementById('mainForm');
              const copy = document.getElementById('copy');
+             const deleteForm = document.getElementById('deleteForm');
 
 
 
@@ -172,11 +187,13 @@
 
                     console.log(input.checked)
                     trashBtn.addEventListener('click', () => {
-                        mainForm.setAttribute('action','{{ route('bulkDelete') }}')
-                        mainForm.submit();
+                        deleteForm.setAttribute('action','{{ route('bulkDelete',["delete" => "soft"] )}}')
+                        input.setAttribute('form','deleteForm');
+                        deleteForm.submit();
                     })
                     copy.addEventListener('click', () => {
                         mainForm.setAttribute('action','{{ route('bulkCopy') }}')
+                        input.setAttribute('form','mainForm');
                         mainForm.submit();
                     })
                 })

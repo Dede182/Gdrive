@@ -43,4 +43,11 @@ class DashboardController extends Controller
         // return View::share('value',$value);
         return view('layouts.sidebar','value');
     }
+
+    public function trash(){
+        $files = Gfile::onlyTrashed()->get();
+        $folders = Folder::onlyTrashed()->get();
+
+        return view('Folder.trash',compact(['files','folders']));
+    }
 }

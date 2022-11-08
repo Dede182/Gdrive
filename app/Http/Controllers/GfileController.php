@@ -67,39 +67,84 @@ class GfileController extends Controller
     }
 
     public function bulkDelete(Request $request){
-        // return $request;
+
+
+            $request->delete = "restore" ;
             if(isset($request['files'])){
             $checks = $request["files"];
+            // return $checks;
             $ids = [];
             $files = [];
             foreach($checks as $key=> $check){
                 $ids[$key] = (int)$check;
             }
+            // return Gfile::findOrFail(1);
             foreach($ids as $key=>$id){
-                $files[$key] = Gfile::findOrFail($id);
+                $files[$key] = Gfile::withTrashed()->findOrFail($id);
             }
+            // return $files;
+            // method filter
+            if(request('delete')==="soft"):
+                Gfile::withTrashed()->whereIn('id',$ids)->delete();
+            $message ="files are moved to trash";
 
+            elseif(request('delete')==="restore"):
+
+                Gfile::withTrashed()->whereIn('id',$ids)->restore();
+            $message ="files are restored";
+
+            else:
             foreach($files as $file){
                 Storage::delete('public/'.Auth::user()->name.'/'.$file->fileName);
             }
             // return "storage deleted";
-            Gfile::destroy($ids);
+            Gfile::withTrashed()->whereIn('id',$ids)->forceDelete();
+            $message ="files are deleted permantely!";
+            endif;
+            return redirect()->back()->with('status',$message);
         }
 
         if(isset($request['folders'])){
             $checks = $request["folders"];
             $ids = [];
             $folders = [];
+            $fileIds = [];
+            $files = [];
             foreach($checks as $key=> $check){
                 $ids[$key] = (int)$check;
             }
             foreach($ids as $key=>$id){
-                $folders[$key] = Folder::findOrFail($id);
+                $folders[$key] = Folder::withTrashed()->findOrFail($id);
             }
-                foreach($folders as $folder){
-                    Storage::deleteDirectory('public/'.Auth::user()->name.'/'.$folder->folderName);
-                }
-                Folder::destroy($ids);
+            foreach($folders[0]->files as $key=>$folder){
+                $fileIds[$key] = $folder->id;
+            }
+            foreach($fileIds as $key=>$id){
+                $files[$key] = Gfile::withTrashed()->findOrFail($id);
+            }
+            // return $files;
+            if(request('delete')==="soft"):
+                GFile::withTrashed()->whereIn('id',$fileIds)->delete();
+                Folder::withTrashed()->whereIn('id',$ids)->delete();
+            $message ="folders are moved to trash";
+
+            elseif(request('delete')==="restore"):
+                GFile::withTrashed()->whereIn('id',$fileIds)->restore();
+
+                Folder::withTrashed()->whereIn('id',$ids)->restore();
+            $message ="folders are restored";
+
+            else:
+            foreach($folders as $folder){
+                Storage::delete('public/'.Auth::user()->name.'/'.$folder->folderName);
+            }
+            // return "storage deleted";
+            GFile::withTrashed()->whereIn('id',$fileIds)->forceDelete();
+
+            Folder::withTrashed()->whereIn('id',$ids)->forceDelete();
+            $message ="folders are deleted permantely!";
+            endif;
+            return redirect()->back()->with('status',$message);
         }
 
 
@@ -141,6 +186,7 @@ class GfileController extends Controller
                 $folders[$key] = Folder::findOrFail($id);
             }
 
+
             foreach($folders as $dc){
                 $newfolder = $dc->replicate();
                 $newfolder->folderName = $dc->folderName."_copy_`".Str::random(6);
@@ -167,20 +213,10 @@ class GfileController extends Controller
         return redirect()->back()->with('status','Duplication process successed');
     }
 
-    public function bulkDownload(Request $request){
-        if(isset($request['files'])){
-            $checks = $request["files"];
-            $ids = [];
-            $files = [];
-            foreach($checks as $key=> $check){
-                $ids[$key] = (int)$check;
-            }
-            foreach($ids as $key=>$id){
-                $files[$key] = Gfile::findOrFail($id);
-              return   response()->download(storage_path('app/public/'.$files[$key]->filePath));
-            }
+    public function downloads(Gfile $file){
 
-            return redirect()->back()->with('status','download process successed');
-        }
+              return   response()->download(storage_path('app/public/'.$file->filePath));
+
+
     }
 }
