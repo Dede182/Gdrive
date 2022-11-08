@@ -91,7 +91,7 @@
                                 <input type="checkbox" name="files[]" class="hidden" form="mainForm"
                                     value="{{ $file->id }}">
                                 <div class="h-[85%] border w-full flex overflow-hidden items-center justify-center">
-                                    <a class="venobox my-image-links " id="veno">
+                                    <a class="venobox my-image-links "  data-autoplay="true" data-vbtype="video" data-ratio="1x1" data-maxwidth="400px"  id="veno">
                                         <img src="{{ asset('images/png/002-pdf.png') }}"
                                             class="w-14 indicate h-14 mr-4 object-cover text-gray-500 "
                                             id="{{ $file->filePath }}" alt="" />
@@ -238,7 +238,9 @@
                 extension = extension[0];
                 switch (extension) {
                     case 'mp4':
-                        image.src = "{{ asset('images/png/004-video.png') }}"
+                    image.src = "{{ asset('images/png/004-video.png') }}"
+                        image.parentElement.setAttribute('href', `{{ asset('storage/' . '${image.id}') }}`)
+                        console.log(image.parentElement.parentElement);
                         break;
                     case 'png':
                     case 'jpg':

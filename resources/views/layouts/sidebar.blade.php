@@ -113,7 +113,7 @@
           <div class="w-[90%] bg-gray-400 rounded-full h-1.5" bis_skin_checked="1">
                 <div class="bg-blue-300 bg-opacity-70 h-1.5 rounded-full" id = "percentBar" bis_skin_checked="1"></div>
             </div>
-            <p class="text-xs text-gray-700 mt-3 font-medium">  <span id = "TotalFileSize">{{ MbCalculate::TotalFileSize("value") }}</span> of 1 GB used</p>
+            <p class="text-xs text-gray-700 mt-3 font-medium">  <span id = "TotalFileSize">{{ MbCalculate::TotalFileSize("value") }}</span> of 100mb used</p>
         </div>
         <div class="pl-7 w-fit mt-3 cursor-pointer">
             <div class="px-4 py-1 rounded-lg hover:bg-gray-200 border-2 text-md text-blue-600 font-medium">

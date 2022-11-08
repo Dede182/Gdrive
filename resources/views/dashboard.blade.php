@@ -115,11 +115,13 @@
                                 value="{{ $file->id }}">
                             <div class="h-[85%] overflow-hidden border w-full flex items-center justify-center">
 
-                                    <a class="venobox my-image-links  " data-autoplay="true" data-vbtype="video" data-ratio="1x1" data-maxwidth="400px"  id="veno">
-                                    <img src="{{ asset('images/png/002-pdf.png') }}"
-                                        class="w-14 indicate h-14 mr-4 object-cover text-gray-500 "
-                                        id="{{ $file->filePath }}" alt="" />
-                                    </a>
+                                        <a class="venobox my-image-links  " data-autoplay="true" data-vbtype="video" data-ratio="1x1" data-maxwidth="400px"  id="veno">
+                                        <img src="{{ asset('images/png/002-pdf.png') }}"
+                                            class="w-14 indicate h-14 mr-4 object-cover text-gray-500 "
+                                            id="{{ $file->filePath }}" alt="" />
+                                        </a>
+
+
 
 
                             </div>
@@ -273,6 +275,10 @@
                 extension = name.match(regex);
                 extension = extension[0];
                 switch (extension) {
+                    case 'pdf':
+                        image.src = "{{ asset('images/png/002-pdf.png') }}"
+
+                    break;
                     case 'mp4':
                         image.src = "{{ asset('images/png/004-video.png') }}"
                         break;
@@ -286,6 +292,7 @@
                     case 'zip':
                         image.src = "{{ asset('images/png/zip.png') }}"
                         break;
+
                     case 'rar':
                         image.src = "{{ asset('images/png/rar.png') }}"
                         break;
@@ -303,6 +310,12 @@
                 extension = name.match(regex);
                 extension = extension[0];
                 switch (extension) {
+                    case 'pdf':
+                        image.src = "{{ asset('images/png/002-pdf.png') }}"
+                        image.parentElement.setAttribute('href', `{{ asset('storage/' . '${image.id}') }}`)
+
+                        image.parentElement.setAttribute('data-vbtype' , "iframe")
+                    break;
                     case 'mp4':
                         image.src = "{{ asset('images/png/004-video.png') }}"
                         image.parentElement.setAttribute('href', `{{ asset('storage/' . '${image.id}') }}`)
