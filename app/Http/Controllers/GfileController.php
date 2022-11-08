@@ -56,16 +56,6 @@ class GfileController extends Controller
     }
 
 
-    public function download(){
-        return "hi";
-    }
-
-    public function destroy(Request $request)
-    {
-
-
-    }
-
     public function bulkDelete(Request $request){
 
 
@@ -130,7 +120,14 @@ class GfileController extends Controller
 
             elseif(request('delete')==="restore"):
                 GFile::withTrashed()->whereIn('id',$fileIds)->restore();
-
+                $restoreFiles = [];
+                foreach($ids as $key=>$id){
+                    $files = Gfile::withTrashed()->where('folder_id','=',"$id")->get();
+                    foreach($files as $key=>$file){
+                        $restoreFiles[$key] = $file->id;
+                    }
+                }
+                GFile::withTrashed()->whereIn('id',$restoreFiles)->restore();
                 Folder::withTrashed()->whereIn('id',$ids)->restore();
             $message ="folders are restored";
 
@@ -214,9 +211,6 @@ class GfileController extends Controller
     }
 
     public function downloads(Gfile $file){
-
               return   response()->download(storage_path('app/public/'.$file->filePath));
-
-
     }
 }

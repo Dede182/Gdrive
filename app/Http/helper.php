@@ -19,7 +19,7 @@ class MbCalculate
     }
 
 
-    public static function TotalFileSize(){
+    public static function TotalFileSize($get){
         $user= User::where('id','=',Auth::user()->id)->with('gfile')->first();
         $allfiles = $user->gfile;
         $fileSizes =[];
@@ -28,7 +28,14 @@ class MbCalculate
             $fileSizes[$key] = $size;
         }
         $total =  array_sum($fileSizes) ;
+
         $value = MbCalculate::bytesToHuman($total ) ;
-        return $value;
+
+        if($get==="total"){
+            return $total;
+        }
+        elseif($get==="value"){
+            return $value;
+        }
     }
 }
