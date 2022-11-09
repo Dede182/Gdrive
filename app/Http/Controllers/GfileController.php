@@ -106,9 +106,22 @@ class GfileController extends Controller
             foreach($ids as $key=>$id){
                 $folders[$key] = Folder::withTrashed()->findOrFail($id);
             }
-            foreach($folders[0]->files as $key=>$folder){
-                $fileIds[$key] = $folder->id;
-            }
+            // return $folders;
+
+           foreach($folders as $folder){
+                // foreach($folder->files as $key=>$file)
+                // {
+                //     $fileIds[$key] = $file->id;
+                // }
+                for($i=0;$i<count($folder->files);$i++){
+                    $fileIds[$i] = $folder->files[$i]->id;
+                }
+           }
+
+
+            // return $fileIds;
+
+
             foreach($fileIds as $key=>$id){
                 $files[$key] = Gfile::withTrashed()->findOrFail($id);
             }
