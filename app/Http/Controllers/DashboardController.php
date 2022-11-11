@@ -14,13 +14,24 @@ use Illuminate\Support\Facades\View;
 
 class DashboardController extends Controller
 {
-    public function index(){
-        $folders = Folder::where('user_id','=',Auth::user()->id)
+    public function index(Request $request){
+        $folders = Folder::
+        when(request('search'),function($q){
+            $search = request('search');
+            $q->orWhere('folderName','like',"%$search%");
+        })
+        ->where('user_id','=',Auth::user()->id)
+
         ->latest('id')
         ->limit(8)
         ->get();
 
-        $files = Gfile::where('user_id','=',Auth::user()->id)
+        $files = Gfile::
+        when(request('search'),function($q){
+            $search = request('search');
+            $q->orWhere('fileName','like',"%$search%");
+        })
+        ->where('user_id','=',Auth::user()->id)
         ->latest('id')
         ->get();
 
@@ -29,6 +40,20 @@ class DashboardController extends Controller
         return view('dashboard',compact(['folders','files']));
     }
 
+    public function recent(){
+        $folders = Folder::where('user_id','=',Auth::user()->id)
+
+        ->latest('id')
+        ->limit(4)
+        ->get();
+
+        $files = Gfile::
+        where('user_id','=',Auth::user()->id)
+        ->latest('id')
+        ->limit(4)
+        ->get();
+        return view('dashboard',compact(['folders','files']));
+    }
 
     public  function sidebar(){
         $user= User::where('id','=',Auth::user()->id)->with('gfile')->first();
