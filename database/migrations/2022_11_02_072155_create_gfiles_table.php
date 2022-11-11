@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('fileName');
             $table->string('filePath');
             $table->string('ParentName')->nullable();
+            $table->string('fileSize');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('folder_id')->nullable()->constrained()->cascadeOnDelete();
             $table->softDeletes();

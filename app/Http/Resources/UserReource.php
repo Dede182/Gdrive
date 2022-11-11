@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class FileCollection extends ResourceCollection
+class UserReource extends JsonResource
 {
     /**
-     * Transform the resource collection into an array.
+     * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
@@ -15,7 +15,7 @@ class FileCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => new FileResource($this)
+
         ];
     }
 }

@@ -27,19 +27,24 @@ class GfileController extends Controller
 
             if($request->id){
                 $parentFolder = Folder::findOrFail($request->id);
+                $afile->storeAs('public/'.$folderName.'/',$Fname);
 
                 $fileCollection[$key] = [
                     'fileName' => $Fname,
                     'user_id' => Auth::user()->id,
                     'filepath' => $filepath,
                     'parentName' => $parentFolder->folderName,
+                    'fileSize' => Storage::size('public/'.$filepath),
                     'folder_id' => $request->id,
                 ];
+
             }
             else{
+                $afile->storeAs('public/'.$folderName.'/',$Fname);
                 $fileCollection[$key] = [
                     'fileName' => $Fname,
                     'filepath' => $filepath,
+                    'fileSize' => Storage::size('public/'.$filepath),
 
                     'user_id' => Auth::user()->id,
                 ];
@@ -47,7 +52,6 @@ class GfileController extends Controller
             }
 
 
-                $afile->storeAs('public/'.$folderName.'/',$Fname);
 
         }
         Gfile::insert($fileCollection);
@@ -91,7 +95,7 @@ class GfileController extends Controller
             Gfile::withTrashed()->whereIn('id',$ids)->forceDelete();
             $message ="files are deleted permantely!";
             endif;
-            return redirect()->back()->with('status',$message);
+            // return redirect()->back()->with('status',$message);
         }
 
         if(isset($request['folders'])){
@@ -154,11 +158,11 @@ class GfileController extends Controller
             Folder::withTrashed()->whereIn('id',$ids)->forceDelete();
             $message ="folders are deleted permantely!";
             endif;
-            return redirect()->back()->with('status',$message);
+            // return redirect()->back()->with('status',$message);
         }
 
 
-        return redirect()->route('dashboard')->with('status','files are deleted');
+        return redirect()->back()->with('status',$message);
     }
     // bulk copy
     public function bulkCopy(Request $request){

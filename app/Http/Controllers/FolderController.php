@@ -62,17 +62,18 @@ class FolderController extends Controller
             $keepFolderName =Auth::user()->name.'/'.$folder->folderName;
             $Fname = $afile->getClientOriginalName();
 
+            $afile->storeAs('public/'.$keepFolderName.'/',$Fname);
 
                 $fileCollection[$key] = [
                     'fileName' => $Fname,
                     'filePath' => $keepFolderName.'/'.$Fname,
                     'parentName' => $folder->folderName,
+                    'fileSize' => Storage::size('public/'.$keepFolderName.'/'.$Fname),
                     'user_id' => Auth::user()->id,
                     'folder_id' => $folder->id,
                 ];
 
 
-            $afile->storeAs('public/'.$keepFolderName.'/',$Fname);
         }
         Gfile::insert($fileCollection);
 
