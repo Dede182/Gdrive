@@ -22,7 +22,7 @@ class GfileController extends Controller
         foreach($request->fileName as $key=> $afile){
             Storage::makeDirectory(Auth::user()->name);
             $folderName = Auth::user()->name;
-            $Fname = $afile->getClientOriginalName();
+            $Fname = $afile->getClientOriginalName();   
             $filepath = $folderName.'/'.$Fname;
 
             if($request->id){
