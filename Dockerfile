@@ -21,3 +21,5 @@ RUN npm install --force
 RUN npm run build
 
 VOLUME /var/www/node_modules
+
+

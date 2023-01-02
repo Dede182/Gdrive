@@ -8,15 +8,18 @@ if [ ! -f ".env"];then
 else
     echo "env file exists"
 fi
-php artisan migrate
+
+php artisan config:clear
+
+php artisan migrate:fresh --seed
 php artisan key:generate
 
 php artisan cache:clear
 php artisan config:clear
 php artisan route:clear
-
+php artisan optimize
 php artisan serve --port=$PORT --host=0.0.0.0 --env=.env
 echo $PORT
 
-npm run dev
+
 exec docker-php-entrypoint "$@"
